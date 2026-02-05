@@ -135,7 +135,12 @@ def test_ssl_mode_not_in_uri_when_default():
 
 
 def test_cloud_sql_instance_field():
-    """Test that cloud_sql_instance field is correctly set"""
+    """Test that cloud_sql_instance field is correctly set
+    
+    Note: The connection name format from the actual Cloud SQL instance is:
+    project:number:region:instance (4 parts)
+    This is a valid format for some Google Cloud projects.
+    """
     # Reset the singleton before test
     from warehouse_nexus.cerebrum.configuration_nucleus import ConfigurationSingleton
     ConfigurationSingleton._singleton_ref = None

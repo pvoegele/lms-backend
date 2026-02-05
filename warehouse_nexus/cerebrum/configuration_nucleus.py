@@ -51,7 +51,7 @@ class CerebrumConfig(BaseSettings):
     cloud_sql_instance: Optional[str] = Field(
         default=None,
         validation_alias=AliasChoices("DB_CLOUD_SQL_INSTANCE", "db_cloud_sql_instance"),
-        description="Google Cloud SQL instance connection name (e.g., project:region:instance)"
+        description="Google Cloud SQL instance connection name. Format: project:region:instance or project:number:region:instance"
     )
     
     # SSL mode for Cloud SQL connections
