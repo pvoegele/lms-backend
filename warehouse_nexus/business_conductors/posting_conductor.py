@@ -74,7 +74,7 @@ class PostingConductor:
         # Create audit record
         self._create_audit_record(document, movements_created)
         
-        self.db.commit()
+        # Note: Caller is responsible for committing the transaction
         
         return {
             "success": True,

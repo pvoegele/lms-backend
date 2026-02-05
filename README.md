@@ -12,7 +12,7 @@ This warehouse management system implements a unique architecture with the follo
 
 ## Database Schema
 
-The system implements 23 interconnected tables:
+The system implements 24 interconnected tables:
 
 1. **unit_of_measure** - Measurement units with conversion factors
 2. **product_category** - Hierarchical product categorization

@@ -53,15 +53,12 @@ class ConfigurationSingleton:
     """Thread-safe configuration singleton holder"""
     
     _singleton_ref: Optional[CerebrumConfig] = None
-    _initialization_lock = False
     
     @classmethod
     def materialize_config(cls) -> CerebrumConfig:
         """Materialize or retrieve configuration singleton"""
-        if cls._singleton_ref is None and not cls._initialization_lock:
-            cls._initialization_lock = True
+        if cls._singleton_ref is None:
             cls._singleton_ref = CerebrumConfig()
-            cls._initialization_lock = False
         return cls._singleton_ref
 
 

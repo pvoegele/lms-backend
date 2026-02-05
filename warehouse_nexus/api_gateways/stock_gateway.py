@@ -5,7 +5,7 @@ RESTful routes for creating and posting stock documents
 from fastapi import APIRouter, Depends, HTTPException, status as http_status
 from sqlalchemy.orm import Session as SQLSession
 from sqlalchemy import select
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 
 from warehouse_nexus.cerebrum.psql_conductor import harvest_session
@@ -73,7 +73,7 @@ def create_stock_document(
 def list_stock_documents(
     skip: int = 0,
     limit: int = 100,
-    status_filter: DocumentStateCode = None,
+    status_filter: Optional[DocumentStateCode] = None,
     db: SQLSession = Depends(harvest_session)
 ):
     """List stock documents"""
@@ -135,8 +135,10 @@ def post_stock_document(
     try:
         conductor = PostingConductor(db)
         result = conductor.conduct_posting(str(command.doc_id))
+        db.commit()
         return result
     except ValueError as validation_err:
+        db.rollback()
         raise HTTPException(
             status_code=http_status.HTTP_400_BAD_REQUEST,
             detail=str(validation_err)

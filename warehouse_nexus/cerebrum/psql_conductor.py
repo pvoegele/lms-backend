@@ -28,7 +28,8 @@ psql_conductor = create_engine(
 @event.listens_for(psql_conductor, "connect")
 def on_connection_established(dbapi_connection, connection_metadata):
     """Execute on new connection establishment"""
-    connection_metadata.info['established_at'] = None
+    from datetime import datetime
+    connection_metadata.info['established_at'] = datetime.utcnow()
 
 
 # Custom session factory with explicit transaction boundaries

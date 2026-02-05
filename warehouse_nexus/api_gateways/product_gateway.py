@@ -124,7 +124,7 @@ def list_products(
     """List products"""
     stmt = select(Product)
     if active_only:
-        stmt = stmt.where(Product.is_active == True)
+        stmt = stmt.where(Product.is_active)
     stmt = stmt.offset(skip).limit(limit)
     results = db.execute(stmt).scalars().all()
     return results
