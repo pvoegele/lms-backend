@@ -4,7 +4,7 @@ Central initialization point with custom middleware and routing orchestration
 """
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 import time
 from typing import Callable
 
@@ -46,16 +46,11 @@ async def inject_timing_headers(request: Request, call_next: Callable):
     return response
 
 
-# Root endpoint
-@nexus_application.get("/")
-async def nexus_heartbeat():
-    """Nexus heartbeat endpoint"""
-    return {
-        "platform": operational_params.nexus_designation,
-        "status": "operational",
-        "api_gateway": operational_params.gateway_mount_point,
-        "version": "1.0.0"
-    }
+# Root endpoint - redirect to Swagger UI
+@nexus_application.get("/", include_in_schema=False)
+async def redirect_to_docs():
+    """Redirect root to Swagger UI documentation"""
+    return RedirectResponse(url=f"{operational_params.gateway_mount_point}/docs")
 
 
 # Health check endpoint

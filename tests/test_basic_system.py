@@ -36,17 +36,25 @@ def test_configuration_singleton():
     assert config1 is config2  # Should be same instance
 
 
-@patch('warehouse_nexus.cerebrum.psql_conductor.psql_conductor')
-def test_api_heartbeat(mock_engine):
-    """Test API heartbeat endpoint"""
+def test_api_heartbeat():
+    """Test API root redirect to docs"""
     from launch_nexus import nexus_application
+    import asyncio
     
-    client = TestClient(nexus_application)
-    response = client.get("/")
+    # Find the root route
+    root_route = None
+    for route in nexus_application.routes:
+        if hasattr(route, 'path') and route.path == '/':
+            root_route = route
+            break
     
-    assert response.status_code == 200
-    assert "platform" in response.json()
-    assert response.json()["status"] == "operational"
+    assert root_route is not None, "Root route not found"
+    assert root_route.endpoint.__name__ == "redirect_to_docs"
+    
+    # Test the endpoint directly
+    response = asyncio.run(root_route.endpoint())
+    assert response.status_code == 307
+    assert response.headers.get("location") == "/api/v1/docs"
 
 
 @patch('warehouse_nexus.cerebrum.psql_conductor.psql_conductor')
