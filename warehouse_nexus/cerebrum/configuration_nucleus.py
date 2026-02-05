@@ -27,6 +27,7 @@ class CerebrumConfig(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        env_prefix = "QW_"
     
     def synthesize_psql_uri(self) -> str:
         """Construct PostgreSQL URI from components"""
