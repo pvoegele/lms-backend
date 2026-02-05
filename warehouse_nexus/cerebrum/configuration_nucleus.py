@@ -27,6 +27,9 @@ class CerebrumConfig(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        # Environment variables must be prefixed with QW_ (e.g., QW_PSQL_NODE_HOSTNAME)
+        # This matches the naming convention used in .env.example
+        env_prefix = "QW_"
     
     def synthesize_psql_uri(self) -> str:
         """Construct PostgreSQL URI from components"""
