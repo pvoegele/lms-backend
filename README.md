@@ -49,7 +49,27 @@ pip install -r requirements.txt
 
 ### 2. Configure Environment
 
-Create `.env` file:
+Create `.env` file with either DB_ (for Google Cloud SQL) or QW_ (legacy) prefixes:
+
+#### Option A: Google Cloud SQL with DB_ Secrets (Recommended for Cloud)
+
+```
+DB_HOST=34.40.117.250
+DB_PORT=5432
+DB_NAME=nexus_warehouse
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_SSL_MODE=require
+
+# Optional: Cloud SQL Connector instance name
+# DB_CLOUD_SQL_INSTANCE=cogent-quarter-486519:13:europe-west3:lms-backend-db
+
+QW_GATEWAY_MOUNT_POINT=/api/v1
+QW_NEXUS_DESIGNATION=WarehouseNexus
+QW_DIAGNOSTIC_VERBOSITY=True
+```
+
+#### Option B: Legacy QW_ Prefix (Backward Compatible)
 
 ```
 QW_PSQL_NODE_HOSTNAME=localhost
@@ -61,6 +81,16 @@ QW_GATEWAY_MOUNT_POINT=/api/v1
 QW_NEXUS_DESIGNATION=WarehouseNexus
 QW_DIAGNOSTIC_VERBOSITY=True
 ```
+
+**Note:** DB_ variables take precedence over QW_ variables. This allows for seamless migration to Cloud SQL while maintaining backward compatibility.
+
+**SSL Mode Options:**
+- `disable`: No SSL connection
+- `allow`: Try SSL, fallback to non-SSL
+- `prefer`: Try SSL first (default)
+- `require`: Require SSL connection
+- `verify-ca`: Require SSL with CA verification
+- `verify-full`: Require SSL with full verification
 
 ### 3. Initialize Database
 
