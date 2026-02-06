@@ -88,6 +88,83 @@ uvicorn launch_nexus:nexus_application --host 0.0.0.0 --port 8000 --reload
 
 Navigate to: `http://localhost:8000/api/v1/docs`
 
+## Google Cloud SQL Setup
+
+The application supports Google Cloud SQL for production deployments. There are two connection methods:
+
+### Method 1: Cloud SQL Connector (Recommended for Production)
+
+The Cloud SQL Connector provides secure connections without requiring IP whitelisting.
+
+**Environment Configuration:**
+
+```env
+QW_USE_CLOUD_SQL_CONNECTOR=true
+QW_CLOUD_SQL_CONNECTION_NAME=cogent-quarter-486519-t3:europe-west3:lms-backend-db
+QW_PSQL_AUTH_PRINCIPAL=your_db_user
+QW_PSQL_AUTH_TOKEN=your_db_password
+QW_PSQL_SCHEMA_VAULT=nexus_warehouse
+```
+
+**GitHub Actions Deployment:**
+
+```yaml
+env:
+  QW_USE_CLOUD_SQL_CONNECTOR: true
+  QW_CLOUD_SQL_CONNECTION_NAME: ${{ secrets.DB_CONNECTION }}
+  QW_PSQL_AUTH_PRINCIPAL: ${{ secrets.DB_USER }}
+  QW_PSQL_AUTH_TOKEN: ${{ secrets.DB_PASSWORD }}
+  QW_PSQL_SCHEMA_VAULT: nexus_warehouse
+```
+
+**Required Dependencies:**
+
+The Cloud SQL connector dependencies are included in `requirements.txt`:
+- `cloud-sql-python-connector[pg8000]>=1.11.0`
+- `pg8000>=1.30.0`
+
+### Method 2: Direct IP Connection
+
+For development/testing, you can connect directly using the public IP address.
+
+**Environment Configuration:**
+
+```env
+QW_USE_CLOUD_SQL_CONNECTOR=false
+QW_PSQL_PUBLIC_IP=34.40.117.230
+QW_PSQL_NODE_TCP_PORT=5432
+QW_PSQL_AUTH_PRINCIPAL=your_db_user
+QW_PSQL_AUTH_TOKEN=your_db_password
+QW_PSQL_SCHEMA_VAULT=nexus_warehouse
+```
+
+**Note:** This method requires your IP address to be whitelisted in Cloud SQL.
+
+### Environment Variable Mapping
+
+When deploying to production, map GitHub secrets to environment variables:
+
+| GitHub Secret | Environment Variable | Description |
+|--------------|---------------------|-------------|
+| `DB_CONNECTION` | `QW_CLOUD_SQL_CONNECTION_NAME` | Cloud SQL connection name |
+| `DB_USER` | `QW_PSQL_AUTH_PRINCIPAL` | Database username |
+| `DB_PASSWORD` | `QW_PSQL_AUTH_TOKEN` | Database password |
+| `DB_PUBLIC_GOOGLE_SQL` | `QW_PSQL_PUBLIC_IP` | Public IP (for direct connection) |
+
+### Connection Mode Selection
+
+The application automatically selects the connection method:
+
+1. **Cloud SQL Connector Mode**: Enabled when `QW_USE_CLOUD_SQL_CONNECTOR=true` and `QW_CLOUD_SQL_CONNECTION_NAME` is set
+2. **Direct Connection Mode**: Used as default/fallback for local development or when connector is disabled
+
+### Security Features
+
+- Connection pooling with automatic stale connection detection (`pool_pre_ping=True`)
+- Connection recycling every 30 minutes (`pool_recycle=1800`)
+- Secure credential handling (never logged or exposed)
+- Automatic timezone configuration (UTC)
+
 ## Key Features
 
 ### Stock Document Posting
