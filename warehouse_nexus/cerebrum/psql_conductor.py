@@ -30,6 +30,10 @@ def create_cloud_sql_engine():
                 password=runtime_cfg.psql_auth_token,
                 db=runtime_cfg.psql_schema_vault,
             )
+            # Set timezone to UTC for consistency with standard connection
+            cursor = conn.cursor()
+            cursor.execute("SET timezone = 'UTC'")
+            cursor.close()
             return conn
         
         # Create engine with pg8000 driver

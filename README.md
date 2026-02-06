@@ -100,7 +100,7 @@ The Cloud SQL Connector provides secure connections without requiring IP whiteli
 
 ```env
 QW_USE_CLOUD_SQL_CONNECTOR=true
-QW_CLOUD_SQL_CONNECTION_NAME=cogent-quarter-486519-t3:europe-west3:lms-backend-db
+QW_CLOUD_SQL_CONNECTION_NAME=your-project-id:region:instance-name
 QW_PSQL_AUTH_PRINCIPAL=your_db_user
 QW_PSQL_AUTH_TOKEN=your_db_password
 QW_PSQL_SCHEMA_VAULT=nexus_warehouse
@@ -131,7 +131,7 @@ For development/testing, you can connect directly using the public IP address.
 
 ```env
 QW_USE_CLOUD_SQL_CONNECTOR=false
-QW_PSQL_PUBLIC_IP=34.40.117.230
+QW_PSQL_PUBLIC_IP=X.X.X.X
 QW_PSQL_NODE_TCP_PORT=5432
 QW_PSQL_AUTH_PRINCIPAL=your_db_user
 QW_PSQL_AUTH_TOKEN=your_db_password
