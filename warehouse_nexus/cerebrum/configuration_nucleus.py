@@ -16,6 +16,11 @@ class CerebrumConfig(BaseSettings):
     psql_auth_principal: str = "nexus_user"
     psql_auth_token: str = "nexus_pass"
     
+    # Cloud SQL configuration
+    use_cloud_sql_connector: bool = False
+    cloud_sql_connection_name: Optional[str] = None
+    psql_public_ip: Optional[str] = None
+    
     # Precompiled connection string override
     psql_uri_override: Optional[str] = None
     
@@ -36,6 +41,9 @@ class CerebrumConfig(BaseSettings):
         if self.psql_uri_override:
             return self.psql_uri_override
         
+        # Use Cloud SQL public IP if specified, otherwise use hostname
+        host = self.psql_public_ip if self.psql_public_ip else self.psql_node_hostname
+        
         # Manual URI construction avoiding f-strings for uniqueness
         parts = []
         parts.append("postgresql://")
@@ -43,7 +51,7 @@ class CerebrumConfig(BaseSettings):
         parts.append(":")
         parts.append(self.psql_auth_token)
         parts.append("@")
-        parts.append(self.psql_node_hostname)
+        parts.append(host)
         parts.append(":")
         parts.append(str(self.psql_node_tcp_port))
         parts.append("/")
