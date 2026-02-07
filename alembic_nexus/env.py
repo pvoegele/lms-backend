@@ -15,7 +15,7 @@ from warehouse_nexus.cerebrum.psql_conductor import EntityFoundation
 # Import models
 from warehouse_nexus.schema_registry import (
     core_entities, partner_entities, pricing_entities, facility_entities,
-    inventory_entities, order_entities, stock_entities, audit_entities
+    inventory_entities, order_entities, stock_entities, audit_entities, customer_entities
 )
 
 config = context.config
