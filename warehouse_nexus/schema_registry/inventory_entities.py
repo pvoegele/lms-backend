@@ -29,8 +29,9 @@ class InventoryBalance(EntityFoundation):
     
     product = relationship("Product")
     variant = relationship("ProductVariant")
-    warehouse = relationship("Warehouse")
-    location = relationship("StorageLocation")
+    # Note: Warehouse/StorageLocation relationships temporarily removed to fix SQLAlchemy configuration issues
+    # warehouse = relationship("Warehouse")
+    # location = relationship("StorageLocation")
     lot = relationship("Lot")
     
     __table_args__ = (
@@ -62,8 +63,9 @@ class InventoryReservation(EntityFoundation):
     
     product = relationship("Product")
     variant = relationship("ProductVariant")
-    warehouse = relationship("Warehouse")
-    location = relationship("StorageLocation")
+    # Note: Warehouse/StorageLocation relationships temporarily removed to fix SQLAlchemy configuration issues
+    # warehouse = relationship("Warehouse")
+    # location = relationship("StorageLocation")
     
     __table_args__ = (
         Index('ix_reservation_product', 'product_id'),
@@ -89,7 +91,8 @@ class Lot(EntityFoundation):
     
     product = relationship("Product")
     variant = relationship("ProductVariant")
-    supplier = relationship("Supplier")
+    # Note: Supplier relationship temporarily removed to fix SQLAlchemy configuration issues  
+    # supplier = relationship("Supplier", viewonly=True)
     
     __table_args__ = (
         Index('ix_lot_product', 'product_id'),
@@ -117,8 +120,9 @@ class SerialNumber(EntityFoundation):
     product = relationship("Product")
     variant = relationship("ProductVariant")
     lot = relationship("Lot")
-    warehouse = relationship("Warehouse")
-    location = relationship("StorageLocation")
+    # Note: Warehouse/StorageLocation relationships temporarily removed to fix SQLAlchemy configuration issues
+    # warehouse = relationship("Warehouse")
+    # location = relationship("StorageLocation")
     
     __table_args__ = (
         Index('ix_serial_product', 'product_id'),

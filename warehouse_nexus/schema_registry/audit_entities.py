@@ -25,7 +25,8 @@ class Stocktake(EntityFoundation):
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     
-    warehouse = relationship("Warehouse")
+    # Note: Warehouse relationship temporarily removed to fix SQLAlchemy configuration issues
+    # warehouse = relationship("Warehouse")
     
     __table_args__ = (
         Index('ix_stocktake_warehouse', 'warehouse_id'),
@@ -53,7 +54,8 @@ class StocktakeLine(EntityFoundation):
     stocktake = relationship("Stocktake", backref="stocktake_lines")
     product = relationship("Product")
     variant = relationship("ProductVariant")
-    location = relationship("StorageLocation")
+    # Note: StorageLocation relationship temporarily removed to fix SQLAlchemy configuration issues
+    # location = relationship("StorageLocation")
     lot = relationship("Lot")
     
     __table_args__ = (
