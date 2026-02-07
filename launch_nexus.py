@@ -11,6 +11,7 @@ from typing import Callable
 from warehouse_nexus.cerebrum.configuration_nucleus import extract_runtime_config
 from warehouse_nexus.api_gateways.product_gateway import product_gateway
 from warehouse_nexus.api_gateways.stock_gateway import stock_gateway
+from warehouse_nexus.api_gateways.customer_gateway import customer_gateway
 
 # Extract operational configuration
 operational_params = extract_runtime_config()
@@ -75,6 +76,11 @@ nexus_application.include_router(
 
 nexus_application.include_router(
     stock_gateway,
+    prefix=operational_params.gateway_mount_point
+)
+
+nexus_application.include_router(
+    customer_gateway,
     prefix=operational_params.gateway_mount_point
 )
 

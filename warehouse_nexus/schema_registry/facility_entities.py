@@ -25,6 +25,9 @@ class Warehouse(EntityFoundation):
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     
+    # Relationships
+    storage_locations = relationship("StorageLocation", back_populates="warehouse", foreign_keys="StorageLocation.warehouse_id")
+    
     __table_args__ = (
         Index('ix_warehouse_active', 'is_active'),
     )
@@ -43,7 +46,7 @@ class StorageLocation(EntityFoundation):
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     
-    warehouse = relationship("Warehouse", backref="storage_locations")
+    warehouse = relationship("Warehouse", back_populates="storage_locations", foreign_keys=[warehouse_id])
     
     __table_args__ = (
         Index('ix_location_warehouse', 'warehouse_id'),

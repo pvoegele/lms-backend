@@ -28,7 +28,8 @@ class PurchaseOrder(EntityFoundation):
     updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     
     supplier = relationship("Supplier")
-    warehouse = relationship("Warehouse")
+    # Note: Warehouse relationship temporarily removed to fix SQLAlchemy configuration issues
+    # warehouse = relationship("Warehouse")
     
     __table_args__ = (
         Index('ix_po_supplier', 'supplier_id'),
@@ -78,7 +79,8 @@ class SalesOrder(EntityFoundation):
     updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     
     customer = relationship("Customer")
-    warehouse = relationship("Warehouse")
+    # Note: Warehouse relationship temporarily removed to fix SQLAlchemy configuration issues
+    # warehouse = relationship("Warehouse")
     
     __table_args__ = (
         Index('ix_so_customer', 'customer_id'),
