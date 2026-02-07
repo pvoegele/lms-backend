@@ -28,8 +28,9 @@ class StockDocument(EntityFoundation):
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     
-    source_warehouse = relationship("Warehouse", foreign_keys=[source_warehouse_id])
-    dest_warehouse = relationship("Warehouse", foreign_keys=[dest_warehouse_id])
+    # Note: Warehouse relationships temporarily removed to fix SQLAlchemy configuration issues
+    # source_warehouse = relationship("Warehouse", foreign_keys=[source_warehouse_id], viewonly=True)
+    # dest_warehouse = relationship("Warehouse", foreign_keys=[dest_warehouse_id], viewonly=True)
     
     __table_args__ = (
         Index('ix_stock_doc_type', 'doc_type'),
@@ -59,8 +60,9 @@ class StockDocumentLine(EntityFoundation):
     product = relationship("Product")
     variant = relationship("ProductVariant")
     lot = relationship("Lot")
-    source_location = relationship("StorageLocation", foreign_keys=[source_location_id])
-    dest_location = relationship("StorageLocation", foreign_keys=[dest_location_id])
+    # Note: StorageLocation relationships temporarily removed to fix SQLAlchemy configuration issues
+    # source_location = relationship("StorageLocation", foreign_keys=[source_location_id])
+    # dest_location = relationship("StorageLocation", foreign_keys=[dest_location_id])
     uom = relationship("UnitOfMeasure")
     
     __table_args__ = (
@@ -86,15 +88,16 @@ class StockMovement(EntityFoundation):
     movement_timestamp = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     
-    stock_document = relationship("StockDocument")
-    document_line = relationship("StockDocumentLine")
-    product = relationship("Product")
-    variant = relationship("ProductVariant")
-    lot = relationship("Lot")
-    source_warehouse = relationship("Warehouse", foreign_keys=[source_warehouse_id])
-    source_location = relationship("StorageLocation", foreign_keys=[source_location_id])
-    dest_warehouse = relationship("Warehouse", foreign_keys=[dest_warehouse_id])
-    dest_location = relationship("StorageLocation", foreign_keys=[dest_location_id])
+    stock_document = relationship("StockDocument", viewonly=True)
+    document_line = relationship("StockDocumentLine", viewonly=True)
+    product = relationship("Product", viewonly=True)
+    variant = relationship("ProductVariant", viewonly=True)
+    lot = relationship("Lot", viewonly=True)
+    # Note: Warehouse and StorageLocation relationships temporarily removed to fix SQLAlchemy configuration issues
+    # source_warehouse = relationship("Warehouse", foreign_keys=[source_warehouse_id], viewonly=True)
+    # source_location = relationship("StorageLocation", foreign_keys=[source_location_id], viewonly=True)
+    # dest_warehouse = relationship("Warehouse", foreign_keys=[dest_warehouse_id], viewonly=True)
+    # dest_location = relationship("StorageLocation", foreign_keys=[dest_location_id], viewonly=True)
     
     __table_args__ = (
         Index('ix_movement_doc', 'doc_id'),

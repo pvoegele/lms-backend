@@ -171,7 +171,6 @@ class CustomerEntity(EntityFoundation):
     firm_name = Column(String(250), nullable=True)
     vat_id = Column(String(50), nullable=True)
     tax_number = Column(String(50), nullable=True)
-    address_uuid = Column(PG_UUID(as_uuid=True), ForeignKey("address.uuid"), nullable=True)
     tax_country_uuid = Column(PG_UUID(as_uuid=True), ForeignKey("country.uuid"), nullable=True)
     legal_form_uuid = Column(PG_UUID(as_uuid=True), ForeignKey("legal_form.uuid"), nullable=True)
     payment_term_uuid = Column(PG_UUID(as_uuid=True), ForeignKey("payment_term.uuid"), nullable=True)

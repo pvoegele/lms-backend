@@ -216,7 +216,6 @@ class CustomerEntityCreate(BaseModel):
     firm_name: Optional[str] = Field(None, max_length=250)
     vat_id: Optional[str] = Field(None, max_length=50)
     tax_number: Optional[str] = Field(None, max_length=50)
-    address_uuid: Optional[UUID] = None
     tax_country_uuid: Optional[UUID] = None
     legal_form_uuid: Optional[UUID] = None
     payment_term_uuid: Optional[UUID] = None
@@ -230,7 +229,6 @@ class CustomerEntityUpdate(BaseModel):
     firm_name: Optional[str] = Field(None, max_length=250)
     vat_id: Optional[str] = Field(None, max_length=50)
     tax_number: Optional[str] = Field(None, max_length=50)
-    address_uuid: Optional[UUID] = None
     tax_country_uuid: Optional[UUID] = None
     legal_form_uuid: Optional[UUID] = None
     payment_term_uuid: Optional[UUID] = None
